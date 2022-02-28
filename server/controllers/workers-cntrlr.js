@@ -1,9 +1,15 @@
-const getWorkers = (req, res) => {
-    res.send('workers');
+const workers = require('../models/worker-model');
+
+const getWorkers = async (req, res) => {
+    await workers.find()
+        .then(result => res.send(result))
+        .catch(err => res.status(404).send({ message: err }));
 }
 
-const getWorker = (req, res) => {
-    res.send('worker');
+const getWorker = async (req, res) => {
+    await workers.findById(req.params.id)
+        .then(result => res.send(result))
+        .catch(err => res.status(404).send({ message: err }));
 }
 
 const addWorker = (req, res) => {
@@ -18,4 +24,4 @@ const deleteWorker = (req, res) => {
     res.send('worker deleted');
 }
 
-module.exports = {getWorkers, getWorker, addWorker, editWorker, deleteWorker };
+module.exports = { getWorkers, getWorker, addWorker, editWorker, deleteWorker };
