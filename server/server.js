@@ -7,8 +7,11 @@ const cors = require('cors');
 app.use(express.json());
 
 const workers = require('./routers/workers');
+const users = require('./routers/users-route');
 
 app.use(cors());
+
+app.use('/users', users);
 
 app.use('/workers', workers);
 
