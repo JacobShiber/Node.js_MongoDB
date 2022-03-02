@@ -9,11 +9,14 @@ app.use(express.json());
 const workers = require('./routers/workers');
 const users = require('./routers/users-route');
 
+const passport = require('passport');
+require('./config/passport')(passport);
+
 app.use(cors());
 
 app.use('/users', users);
-
-app.use('/workers', workers);
+app.use(passport.initialize());
+app.use('/workers',passport.authenticate('jwt', { session: false }), workers);
 
 app.get('/', (req, res) => {
     res.send('Server is online');
