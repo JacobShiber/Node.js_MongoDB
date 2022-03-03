@@ -1,4 +1,5 @@
-const basic_url = 'http://localhost:7000/workers';
+const basic_url = process.env.NODE_ENV === 'production'? 'https://office-management-mern-app.herokuapp.com/workers' :
+ 'http://localhost:7000/workers';
 
 export const getAllWorkers = () => {
     return fetch(basic_url)

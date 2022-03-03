@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT;
 const cors = require('cors');
+const path = require('path');
 app.use(express.json());
 
 const workers = require('./routers/workers');
@@ -16,10 +17,17 @@ app.use(cors());
 
 app.use('/users', users);
 app.use(passport.initialize());
-app.use('/workers',passport.authenticate('jwt', { session: false }), workers);
+app.use('/workers', passport.authenticate('jwt', { session: false }), workers);
 
-app.get('/', (req, res) => {
-    res.send('Server is online');
-})
+// app.get('/', (req, res) => {
+//     res.send('Server is online');
+// })
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'));
+    app.get('*', (req, res) =>
+        res.sendFile(path.join(_dirname, '../client/build', 'index.html'))
+    )
+}
 
 app.listen(port);
