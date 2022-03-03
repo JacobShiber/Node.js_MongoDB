@@ -15,19 +15,19 @@ require('./config/passport')(passport);
 
 app.use(cors());
 
-app.use('/users', users);
 app.use(passport.initialize());
+app.use('/users', users);
 app.use('/workers', passport.authenticate('jwt', { session: false }), workers);
 
 // app.get('/', (req, res) => {
 //     res.send('Server is online');
 // })
 
-if (process.env.NODE_ENV == 'production') {
+
+app.listen(port);
+if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/build')));
     app.get('*', (req, res) =>
         res.sendFile(path.join(_dirname, '../client/build', 'index.html'))
     )
 }
-
-app.listen(port);
